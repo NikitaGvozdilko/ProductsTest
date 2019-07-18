@@ -35,4 +35,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.github.ome450901:SimpleRatingBar:1.4.3'
 }

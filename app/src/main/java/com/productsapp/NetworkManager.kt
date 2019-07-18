@@ -5,9 +5,7 @@ import android.util.Log
 import com.google.gson.GsonBuilder
 import com.productsapp.api.LoginApi
 import com.productsapp.api.ProductsApi
-import com.productsapp.api.model.AuthResponse
-import com.productsapp.api.model.LoginData
-import com.productsapp.api.model.Product
+import com.productsapp.api.model.*
 import com.productsapp.utils.AppPref
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -93,13 +91,58 @@ class NetworkManager {
         })
     }
 
-    interface OnProductsCallback {
-        fun onSuccess(products: List<Product>?)
-        fun onError()
+    fun getComments(token: String, products: List<String>, onCommentsCallback: OnCommentsCallback) {
+        for (product in products) {
+            productApi?.getComments(token, product)?.enqueue(object : Callback<List<Comment>> {
+
+                override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                    Log.i(TAG, response.toString())
+                    if(response.body() != null)
+                        onCommentsCallback.onSuccess(response.body()!!)
+                }
+                override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+                    Log.w(TAG, t.message)
+                    onCommentsCallback.onError()
+                }
+
+
+
+            })
+        }
     }
 
-    interface OnAuthCallback {
+    fun sendComment(token: String, productId: String, comment: CommentToSend, onCommentsCallback: OnCommentSentCallback) {
+        productApi?.sendComment(token, productId, comment)?.enqueue(object: Callback<CommentResponse> {
+
+            override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+                if (response.body() != null) onCommentsCallback.onSuccess()
+                else onCommentsCallback.onError()
+            }
+
+            override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                onCommentsCallback.onError()
+            }
+
+        })
+    }
+
+    interface OnCommentSentCallback: OnErrorCallback {
+        fun onSuccess()
+    }
+
+    interface OnCommentsCallback: OnErrorCallback {
+        fun onSuccess(comments: List<Comment>)
+    }
+
+    interface OnProductsCallback: OnErrorCallback {
+        fun onSuccess(products: List<Product>?)
+    }
+
+    interface OnAuthCallback: OnErrorCallback {
         fun onAuth(success: Boolean)
+    }
+
+    interface OnErrorCallback {
         fun onError()
     }
 }
