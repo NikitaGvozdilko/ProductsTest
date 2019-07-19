@@ -42,8 +42,6 @@ class ProductsAdapter (private val context: Context,
             holder.layoutAddComment?.setOnClickListener {
                 onAddCommentClickListener.onClicked(product.id)
             }
-
-
         }
     }
 
@@ -64,7 +62,8 @@ class ProductsAdapter (private val context: Context,
                         product.showComments = true
                         recyclerComments?.visibility = View.VISIBLE
                     }
-                    //notifyItemChanged(listProducts.indexOf(product))
+                    imageShowHide?.animate()?.cancel()
+                    imageShowHide?.animate()?.rotationBy(180.0f)
                 }
             } else imageShowHide?.visibility = View.GONE
         }

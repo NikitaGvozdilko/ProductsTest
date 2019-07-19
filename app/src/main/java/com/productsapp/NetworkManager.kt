@@ -46,8 +46,26 @@ class NetworkManager {
         loginApi = retrofit.create(LoginApi::class.java)
     }
 
-    fun login(loginData: LoginData) {
-        loginApi?.login(loginData)
+    fun login(context: Context, loginData: LoginData, onAuthCallback: OnAuthCallback) {
+        loginApi?.login(loginData)?.enqueue(object : Callback<AuthResponse> {
+            override fun onResponse(call: Call<AuthResponse>, response: Response<AuthResponse>) {
+                Log.i(TAG, response.toString())
+                val authResponse = response.body()
+                if(authResponse != null) {
+                    if (authResponse.success) {
+                        AppPref.saveLoginData(context, loginData, authResponse.token)
+                    }
+                    onAuthCallback.onAuth(authResponse.success)
+                } else onAuthCallback.onError()
+            }
+
+            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
+                onAuthCallback.onError()
+            }
+
+
+
+        })
     }
 
     fun signIn(context: Context, loginData: LoginData, onAuthCallback: OnAuthCallback) {

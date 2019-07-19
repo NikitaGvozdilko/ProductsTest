@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import com.productsapp.R
 import com.productsapp.api.model.Comment
+import com.willy.ratingbar.ScaleRatingBar
 
 class CommentsAdapter(private var listComments: List<Comment>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
@@ -24,21 +26,21 @@ class CommentsAdapter(private var listComments: List<Comment>) : RecyclerView.Ad
         holder.apply {
             textComment?.text = comment.text
             textCommentOwner?.text = comment.commentOwner.username
-            textRate?.text = "${comment.rate}/5"
+            ratingBar?.rating = comment.rate
             textDate?.text = comment.date
         }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var textCommentOwner: TextView? = null
-        var textRate: TextView? = null
+        var ratingBar: ScaleRatingBar? = null
         var textComment: TextView? = null
         var textDate: TextView? = null
 
         init {
             textCommentOwner = itemView.findViewById(R.id.textCommentOwner)
-            textRate = itemView.findViewById(R.id.textRate)
             textComment = itemView.findViewById(R.id.textComment)
+            ratingBar = itemView.findViewById(R.id.layoutRatingBar)
             textDate = itemView.findViewById(R.id.textDate)
         }
     }

@@ -23,16 +23,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textRate"
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/layoutRatingBar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginStart="8dp"
-            android:text="5/5"
-            android:textStyle="bold"
-            android:textSize="16sp"
+            app:srb_numStars="5"
+            app:srb_minimumStars="0"
+            app:srb_rating="0"
+            app:srb_starWidth="20dp"
+            app:srb_starHeight="20dp"
+            app:srb_starPadding="0dp"
+            app:srb_stepSize="0.5"
+            app:srb_isIndicator="false"
+            app:srb_clickable="false"
+            app:srb_scrollable="false"
+            app:srb_clearRatingEnabled="true"
+            app:srb_drawableEmpty="@drawable/ic_star_empty"
+            app:srb_drawableFilled="@drawable/ic_star_filled"
             app:layout_constraintBottom_toBottomOf="@id/textCommentOwner"
-            app:layout_constraintStart_toEndOf="@id/textCommentOwner" />
+            app:layout_constraintStart_toEndOf="@id/textCommentOwner"/>
 
         <TextView
             android:id="@+id/textDate"
@@ -47,7 +57,7 @@
             android:id="@+id/textComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="8dp"
             android:text="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet."
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textCommentOwner" />

@@ -12,12 +12,6 @@ interface LoginApi {
     @POST("/api/register/")
     fun signIn(@Body loginData: LoginData) : Call<AuthResponse>
 
-    @POST("/api/register")
-    fun signIn2(@Query("username") loginData: String, @Query("password") password: String) : Call<AuthResponse>
-
     @POST("/api/login/")
-    fun login(loginData: LoginData) : Call<AuthResponse>
-
-    @GET("api/products/")
-    fun getProducts(@Header("Authorization") token: String?) : Call<List<Product>>
+    fun login(@Body loginData: LoginData) : Call<AuthResponse>
 }

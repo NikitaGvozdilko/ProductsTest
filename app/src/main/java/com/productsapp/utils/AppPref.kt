@@ -33,4 +33,8 @@ object AppPref {
 
     fun getToken(context: Context) = getSharedPref(context).getString(PREF_TOKEN, null)
 
+    fun cleanLoginData(context: Context) {
+        getSharedPref(context).edit().remove(PREF_LOGIN).remove(PREF_PASSWORD).remove(PREF_TOKEN).apply()
+    }
+
 }//no instance
