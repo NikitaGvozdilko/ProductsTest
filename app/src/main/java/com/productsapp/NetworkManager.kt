@@ -109,7 +109,7 @@ class NetworkManager {
         })
     }
 
-    fun getComments(token: String, products: List<String>, onCommentsCallback: OnCommentsCallback) {
+    fun getComments(token: String?, products: List<String>, onCommentsCallback: OnCommentsCallback) {
         for (product in products) {
             productApi?.getComments(token, product)?.enqueue(object : Callback<List<Comment>> {
 
@@ -130,7 +130,7 @@ class NetworkManager {
     }
 
     fun sendComment(token: String, productId: String, comment: CommentToSend, onCommentsCallback: OnCommentSentCallback) {
-        productApi?.sendComment(token, productId, comment)?.enqueue(object: Callback<CommentResponse> {
+        productApi?.sendComment("Token $token", productId, comment)?.enqueue(object: Callback<CommentResponse> {
 
             override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                 if (response.body() != null) onCommentsCallback.onSuccess()

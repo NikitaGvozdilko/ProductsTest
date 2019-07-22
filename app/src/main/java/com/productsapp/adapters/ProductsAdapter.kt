@@ -12,7 +12,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.productsapp.R
 import com.productsapp.api.model.Comment
-import com.productsapp.model.ProductModel
+import com.productsapp.adapters.model.ProductModel
 
 class ProductsAdapter (private val context: Context,
                        private var listProducts: List<ProductModel>,

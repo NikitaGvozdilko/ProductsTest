@@ -1,4 +1,4 @@
-package com.productsapp.model
+package com.productsapp.adapters.model
 
 import com.productsapp.api.model.Comment
 import com.productsapp.api.model.Product

@@ -17,7 +17,7 @@ import com.productsapp.api.model.Comment
 import com.productsapp.api.model.CommentToSend
 import com.productsapp.api.model.Product
 import com.productsapp.dialogs.AddCommentDialog
-import com.productsapp.model.ProductModel
+import com.productsapp.adapters.model.ProductModel
 import com.productsapp.utils.AppPref
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,6 +28,12 @@ class MainActivity : AppCompatActivity() {
     private val onAddCommentClickListener = object : ProductsAdapter.OnAddCommentClickListener{
         override fun onClicked(productId: String) {
             this@MainActivity.productId = productId
+            val token = AppPref.getToken(this@MainActivity)
+            if (token == null) {
+                Toast.makeText(applicationContext, "You should log in first to add new comment", Toast.LENGTH_LONG).show()
+                startAuthActivity()
+                return
+            }
             val dialog = AddCommentDialog(this@MainActivity, object: AddCommentDialog.OnDialogClickListener {
                 override fun onPositive(text: String, ratingValue: Float) {
                     ProductsApp.networkManager.sendComment(AppPref.getToken(this@MainActivity),
@@ -48,7 +54,6 @@ class MainActivity : AppCompatActivity() {
             productId = null
             Toast.makeText(this@MainActivity, "Comment wasn't send", Toast.LENGTH_LONG).show()
         }
-
     }
 
     private val onProductsLoadCallback = object: NetworkManager.OnProductsCallback {
@@ -87,25 +92,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        MenuInflater(this).inflate(R.menu.menu_main, menu)
+        if (AppPref.getToken(this@MainActivity) != null)
+            MenuInflater(this).inflate(R.menu.menu_main, menu)
+        else MenuInflater(this).inflate(R.menu.menu_main_alternative, menu)
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
+            R.id.menuProfile -> {
+                val intent = Intent(this@MainActivity, EditProfileActivity::class.java)
+                startActivity(intent)
+            }
             R.id.menuLogout -> {
                 AppPref.cleanLoginData(this@MainActivity)
-                startActivity(Intent(this@MainActivity, AuthActivity::class.java))
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-                finish()
+                ProductsApp.appDatabase?.clearProfile()
+                startAuthActivity()
+            }
+            R.id.menuLogin -> {
+                startAuthActivity()
             }
         }
         return true
     }
 
-    /*override fun onBackPressed() {
-        moveTaskToBack(true)
-    }*/
+    private fun startAuthActivity() {
+        startActivity(Intent(this@MainActivity, AuthActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
+    }
 
     private fun initRecycler() {
         recyclerProducts.layoutManager = LinearLayoutManager(this)

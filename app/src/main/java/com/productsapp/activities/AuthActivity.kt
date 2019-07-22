@@ -38,7 +38,9 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         if (AppPref.getLoginData(this) != null) {
-            onAuthCallback.onAuth(true)
+            if (ProductsApp.appDatabase?.profileDao()?.getProfile() == null)
+                startEditProfileActivity()
+            else startMainActivity()
             return
         }
         buttonLogIn.setOnClickListener {
@@ -55,6 +57,22 @@ class AuthActivity : AppCompatActivity() {
                 ProductsApp.networkManager.signIn(this@AuthActivity, loginData, onAuthCallback)
             }
         }
+        textSignInLater.setOnClickListener{
+            startMainActivity()
+        }
+    }
+
+    private fun startEditProfileActivity() {
+        val intent = Intent(this@AuthActivity, EditProfileActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
+    }
+
+    private fun startMainActivity() {
+        startActivity(Intent(this@AuthActivity, MainActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
     }
 
     private fun isDataEntered(): Boolean {

@@ -12,8 +12,8 @@ internal interface ProductsApi {
     fun getProducts(@Header("Authorization") token: String?) : Call<List<Product>>
 
     @GET("/api/reviews/{id}")
-    fun getComments(@Header("Authorization") token: String, @Path("id") id: String) : Call<List<Comment>>
+    fun getComments(@Header("Authorization") token: String?, @Path("id") id: String) : Call<List<Comment>>
 
     @POST("/api/reviews/{id}")
-    fun sendComment(@Header("Authorization:Token") token: String, @Path("id") productId: String, @Body comment: CommentToSend) : Call<CommentResponse>
+    fun sendComment(@Header("Authorization") token: String, @Path("id") productId: String, @Body comment: CommentToSend) : Call<CommentResponse>
 }

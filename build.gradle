@@ -30,4 +30,5 @@ task clean(type: Delete) {
 ext{
     glideVersion = '4.9.0'
     retrofitVersion = '2.4.0'
+    roomVersion = '1.1.1'
 }
