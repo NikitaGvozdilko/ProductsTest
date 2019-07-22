@@ -38,7 +38,7 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         if (AppPref.getLoginData(this) != null) {
-            if (ProductsApp.appDatabase?.profileDao()?.getProfile() == null)
+            if (ProductsApp.appDatabase?.getProfile() == null)
                 startEditProfileActivity()
             else startMainActivity()
             return

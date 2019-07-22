@@ -28,4 +28,12 @@ abstract class AppDatabase : RoomDatabase() {
     fun clearProfile() {
         profileDao().removeProfile()
     }
+
+    fun getProfile() : ProfileModel {
+        return profileDao().getProfile()
+    }
+
+    fun saveProfile(profileModel: ProfileModel) {
+        profileDao().saveData(profileModel)
+    }
 }

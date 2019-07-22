@@ -30,7 +30,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        val profile = ProductsApp.appDatabase?.profileDao()?.getProfile()
+        val profile = ProductsApp.appDatabase?.getProfile()
         profile?.let {
             editName.setText(it.name)
             editSurname.setText(it.surname)
@@ -51,17 +51,9 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         buttonSave.setOnClickListener {
-            /*if (editName.text.isEmpty())
-                editName.error = "Enter name"
-            else if (editSurname.text.isEmpty())
-                editName.error = "Enter surname"
-            else {*/
-            //ProductsApp.appDatabase?.clearProfile()
-            ProductsApp.appDatabase?.profileDao()?.saveData(
+            ProductsApp.appDatabase?.saveProfile(
                     ProfileModel(editName.text.toString(), editSurname.text.toString(), imageSrc))
             startMainActivity()
-            //finish()
-            //}
         }
     }
 
